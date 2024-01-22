@@ -3,7 +3,7 @@ from tkinter import *
 class MyApp:
     def __init__(self, master):
         self.master = master
-        master.title("My App")
+        master.title("My FYP app")
 
         self.label = Label(master, text="This is my app!")
         self.label.pack()
