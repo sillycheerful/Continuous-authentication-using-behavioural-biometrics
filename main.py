@@ -6,6 +6,7 @@ class MyApp:
         self.root.title("My App")
         self.root.geometry("400x400")
 
+
         self.label = Label(self.root, text="This is my app!")
         self.label.pack()
 
