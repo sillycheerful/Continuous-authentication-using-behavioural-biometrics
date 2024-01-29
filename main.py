@@ -1,14 +1,16 @@
 from tkinter import *
-import time
+import random
 
 class MyApp:
     def __init__ (self, root):
         self.create_primary_window()
         
         for i in range(3):
-            time.sleep(500)
-            self.create_secondary_window()
-
+            n= random.randint(50, 500)
+            print(n)
+            #
+            root.after(n, self.create_secondary_window)
+           
     def create_primary_window(self):
         self.root = root
         self.root.title("My App")
