@@ -1,6 +1,6 @@
 from tkinter import *
 #https://www.geeksforgeeks.org/how-to-get-the-input-from-tkinter-text-box/
-import tkinter as Tk
+
 
 class MyApp:
     def __init__ (self, root):
@@ -15,38 +15,44 @@ class MyApp:
         self.print_button.pack()
 
     #doesnt currently work lol
-        self.record_button = Button(self.root, text="Record", command=self.record_mouse_movement)
-        self.record_button.pack()
+        # self.record_button = Button(self.root, text="Record", command=self.record_mouse_movement)
+        # self.record_button.pack()
 
-        self.exit_button = Button(self.root, text="Exit", command=self.root.quit)
-        self.exit_button.pack()
+        # self.exit_button = Button(self.root, text="Exit", command=self.root.quit)
+        # self.exit_button.pack()
 
-        self.text_window()
+        # self.text_window()
 
-        for i in range(3):
+        for _ in range(3):
             self.create_secondary_window()
+            self.create_text_window()
 
     def create_secondary_window(self):
-        self.secondary_window= Toplevel(self.root)
-        self.secondary_window.title("Speed is being recorded")
-        self.secondary_window.geometry("100x100")
+        """
+        Creates a secondary window with a label and a button.
+        This is for ...
+        """
+        secondary_window= Toplevel(self.root)
+        secondary_window.title("Speed is being recorded")
+        secondary_window.geometry("100x100")
 
-        self.secondary_window_lable= Label(self.secondary_window,text="this is my 2nd window")
-        self.secondary_window_lable.pack()
+        secondary_window_lable= Label(secondary_window,text="this is my 2nd window")
+        secondary_window_lable.pack()
 
-        self.secondary_window_button=Button(self.secondary_window, text="Ok", command=self.secondary_window.destroy)
-        self.secondary_window_button.pack()
+        secondary_window_button=Button(secondary_window, text="Ok", command=secondary_window.destroy)
+        secondary_window_button.pack()
 
-    def text_window(self):
-        self.text_window= Toplevel(self.root)
-        self.text_window.title("Please type")
-        self.text_window.geometry("100x100")
+    def create_text_window(self):
+        text_window= Toplevel(self.root)
+        text_window.title("Please type")
+        text_window.geometry("100x100")
 
         # https://www.geeksforgeeks.org/how-to-get-the-input-from-tkinter-text-box/
-        frame= tk.Tk
-        input_box= Tk.text(frame, height=30, width=90)
-        input_box.pack()
-
+        input_from_user= Entry(text_window)
+        input_from_user.pack()
+        
+        #input_box= Tk.text(frame, height=30, width=90)
+        #input_box.pack()
 
     def print_something(self):
         print("Printing something...")
