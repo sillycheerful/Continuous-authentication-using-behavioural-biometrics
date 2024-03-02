@@ -1,20 +1,23 @@
 from tkinter import *
-#https://www.geeksforgeeks.org/how-to-get-the-input-from-tkinter-text-box/
+import time
+import random
 
 
 class MyApp:
     def __init__ (self, root):
+        self.create_primary_window()
+        for i in range(3):
+            x= random.randint(3000, 120000)
+            root.after(x, self.create_secondary_window)
+            
+
+    def create_primary_window(self):
         self.root = root
         self.root.title("My App")
         self.root.geometry("200x200")
-
-        self.label = Label(self.root, text="This is my app!")
-        self.label.pack()
-
         self.print_button = Button(self.root, text="Print Me", command=self.print_something)
         self.print_button.pack()
-
-    #doesnt currently work lol
+        #doesnt currently work lol
         # self.record_button = Button(self.root, text="Record", command=self.record_mouse_movement)
         # self.record_button.pack()
 
@@ -22,10 +25,12 @@ class MyApp:
         # self.exit_button.pack()
 
         # self.text_window()
+        self.exit_button = Button(self.root, text="Exit", command=self.root.quit)
+        self.exit_button.pack()
+        
+        input_from_user= Entry(self.root)
+        input_from_user.pack()
 
-        for _ in range(3):
-            self.create_secondary_window()
-            self.create_text_window()
 
     def create_secondary_window(self):
         """
@@ -42,18 +47,6 @@ class MyApp:
         secondary_window_button=Button(secondary_window, text="Ok", command=secondary_window.destroy)
         secondary_window_button.pack()
 
-    def create_text_window(self):
-        text_window= Toplevel(self.root)
-        text_window.title("Please type")
-        text_window.geometry("100x100")
-
-        # https://www.geeksforgeeks.org/how-to-get-the-input-from-tkinter-text-box/
-        input_from_user= Entry(text_window)
-        input_from_user.pack()
-        
-        #input_box= Tk.text(frame, height=30, width=90)
-        #input_box.pack()
-
     def print_something(self):
         print("Printing something...")
 
@@ -66,4 +59,3 @@ class MyApp:
 root = Tk()
 my_app = MyApp(root)
 root.mainloop()
-
