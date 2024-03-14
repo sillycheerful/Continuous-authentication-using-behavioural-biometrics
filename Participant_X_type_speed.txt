@@ -1,0 +1,2 @@
+Keys pressed in the last 10 seconds: 28
+Keys pressed in the last 10 seconds: 33
