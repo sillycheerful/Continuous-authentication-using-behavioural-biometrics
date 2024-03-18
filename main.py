@@ -2,14 +2,11 @@ from tkinter import *
 import time
 import random
 from pynput import mouse 
-#from pynput.mouse import Controller
 from pynput import keyboard 
-#import timeit
 
 key_press_count = 0
 interval_start_time_keyboard = time.time()
-#mouse = Controller()
-interval_start_time_mouse = time.time()
+close_time_pop_up = time.time()
 
 class MyApp:
     def __init__ (self, root):
@@ -18,16 +15,19 @@ class MyApp:
         listener = mouse.Listener(
             on_move=self.on_move)
         listener.start() 
-        
-        #self.measure_mouse_speed()
 
         listener = keyboard.Listener(
             on_press=self.on_press)
         listener.start()
-        
+        i=1
         for i in range(3):
-            x= random.randint(3000, 120000)
-            root.after(x, self.create_secondary_window)
+            delay_Time= random.randint(3000, 120000)
+            start_time_pop_up = time.time()
+            root.after(delay_Time, self.create_secondary_window)
+            close_time_pop_up = time.time()
+            with open("Participant_X_pop_up_time.txt","a") as file:
+                file.write(f"Pop up {i+1} appeared after {start_time_pop_up} and was closed after {close_time_pop_up} \n")
+            i+=1
         
     def create_primary_window(self):
         self.root = root
@@ -36,15 +36,18 @@ class MyApp:
         self.print_button = Button(self.root, text="Print Me", command=self.print_something)
         self.print_button.pack()
         
-        self.exit_button = Button(self.root, text="Exit", command=self.root.quit)
+        self.exit_button = Button(self.root, text="Exit",command= lambda:[ self.save_text(input_from_user), self.root.quit()])
         self.exit_button.pack()
 
         input_from_user= Entry(self.root)
         input_from_user.pack()
 
-   
+    def save_text(self, input_from_user):
+        with open("Participant_X_typed_input.txt","a") as file:
+            file.write(input_from_user.get() + "\n")
     
     def create_secondary_window(self):
+        global close_time_pop_up
         """
         Creates a secondary window with a label and a button.
         This is for ...
@@ -59,9 +62,14 @@ class MyApp:
         secondary_window_button=Button(secondary_window, text="Ok", command=secondary_window.destroy)
         secondary_window_button.pack()
 
+        #close_time_pop_up = time.time()
+        #return close_time_pop_up
+
     def print_something(self):
         print("Printing something...")
     
+    
+
     def on_move(self, x, y):
         start_time = time.time()
         total_distance = 0
@@ -72,6 +80,7 @@ class MyApp:
             current_position = x,y
             time.sleep(0.01)  # Small delay to avoid excessive CPU usage
             new_position = x,y
+            
             distance = ((new_position[0] - current_position[0])**2 +
                         (new_position[1] - current_position[1])**2)**0.5
             total_distance += distance
@@ -79,53 +88,11 @@ class MyApp:
             elapsed_time = time.time() - start_time
             if elapsed_time >= 10:
                 average_speed = total_distance / elapsed_time
-                print(average_speed, new_position,current_position,elapsed_time)
+                #come back to this
+                with open("Participant_X_mouse_speed.txt","a") as file:
+                    file.write(f"Average speed in the last 10 seconds: {average_speed}\n")
                 break
-
-    """ def measure_mouse_speed(self):
-        start_time = time.time()
-        total_distance = 0
-
-        while True:
-            current_position = mouse.position
-            #time.sleep(0.01)  # Small delay to avoid excessive CPU usage
-            new_position = mouse.position
-
-            distance = ((new_position[0] - current_position[0])**2 +
-                        (new_position[1] - current_position[1])**2)**0.5
-            total_distance += distance
-
-            elapsed_time = time.time() - start_time
-            if elapsed_time >= 10:
-                break
-
-        average_speed = total_distance / elapsed_time
-        return average_speed """
-    
-    """ def measure_mouse_speed(self)#changed:
-        global interval_start_time_mouse
-        current_time_mouse = time.time()
-        total_distance = 0
-
-        while True:
-            current_position = mouse.position
-            #time.sleep(0.01)  # Small delay to avoid excessive CPU usage
-            new_position = mouse.position
-
-            distance = ((new_position[0] - current_position[0])**2 +
-                        (new_position[1] - current_position[1])**2)**0.5
-            total_distance += distance
-
-            #elapsed_time = time.time() - start_time
-            elapsed_time= current_time_mouse-interval_start_time_mouse
-            if elapsed_time >= 10:
-                average_speed = total_distance / elapsed_time
-                with open("Participant_X.txt","a") as file:
-                    file.write(f"Average mouse speed: {average_speed:.2f} pixels/second\n")
-                total_distance = 0
-                interval_start_time_mouse = current_time_mouse """
-
-
+   
     def on_press(self, event):
         global key_press_count, interval_start_time_keyboard
         key_press_count += 1
